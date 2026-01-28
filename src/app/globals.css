@@ -1,26 +1,137 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
+
+/* ==========================================================================
+   BAIANÊ DESIGN SYSTEM - BAHIA NOIR (Dark Mode)
+   Design System: Dark Energy & Bahia Noir
+   Estética: Monocromática, alto contraste, texturas orgânicas
+   ========================================================================== */
 
 @theme inline {
+  /* Typography (Baianê) - Classes utilitárias */
+  --font-display: var(--font-syne);
+  --font-body: var(--font-inter);
+  --font-sans: var(--font-inter);
+  --font-mono: ui-monospace, SFMono-Regular, monospace;
+  
+  /* Baianê Design Tokens (Custom) */
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  
+  /* Shadcn compatibility tokens */
+  --color-foreground: var(--text-main);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--text-main);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--text-main);
+  --color-primary-foreground: var(--primary-fg);
+  --color-secondary: var(--surface);
+  --color-secondary-foreground: var(--text-main);
+  --color-muted: var(--surface);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--surface-hover);
+  --color-accent-foreground: var(--text-main);
+  --color-destructive: #dc2626;
+  --color-input: var(--border);
+  --color-ring: var(--primary);
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Baianê Bahia Noir Color Palette */
+  --background: #050505;        /* Preto quase absoluto (Deep Black) */
+  --surface: #121212;           /* Cartões e seções secundárias */
+  --surface-hover: #1A1A1A;     /* Estado de hover em cartões */
+  --border: #262626;            /* Divisórias sutis */
+  --primary: #FFFFFF;           /* Cor de Ação/Marca (Branco) */
+  --primary-fg: #000000;        /* Texto dentro de elementos primários */
+  --text-main: #FFFFFF;         /* Títulos e textos de destaque */
+  --text-muted: #A3A3A3;        /* Parágrafos e legendas (Cinza neutro) */
+  
+  /* Border Radius Base */
+  --radius: 0.5rem;
+  
+  /* Box Shadow Effects (The "Sauce") */
+  --glow: 0 0 25px -5px var(--primary);
+  --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  
+  /* Display Typography (Syne) */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), sans-serif;
+    @apply text-text-main;
+  }
+  
+  /* Image Grayscale Effect (Bahia Noir Aesthetic) */
+  img {
+    @apply grayscale transition-all duration-700;
+  }
+  
+  img:hover {
+    @apply grayscale-0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Typography Utilities */
+  .font-display {
+    font-family: var(--font-syne), sans-serif;
+  }
+  
+  .font-body {
+    font-family: var(--font-inter), sans-serif;
+  }
+  
+  .font-sans {
+    font-family: var(--font-inter), sans-serif;
+  }
+  
+  /* Custom Glow Effect */
+  .glow {
+    box-shadow: var(--glow);
+  }
+  
+  /* Card Glass Effect (Vidro Escuro) */
+  .card-glass {
+    @apply bg-black/40 border border-white/10 backdrop-blur-md;
+  }
+  
+  .card-glass:hover {
+    @apply border-white/30;
+  }
+  
+  /* Hide Scrollbar (for horizontal carousels) */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
 }

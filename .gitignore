@@ -1,6 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.*
@@ -10,32 +8,63 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
+# Build & cache
 /.next/
 /out/
-
-# production
 /build
+.turbo
+.cache
+*.tsbuildinfo
 
-# misc
-.DS_Store
-*.pem
+# Env (nunca commitar secrets)
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+.env.local.example
 
-# debug
+# Vercel
+.vercel
+
+# Debug & logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
+npx-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
 
-# vercel
-.vercel
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
 
-# typescript
-*.tsbuildinfo
+# Test
+/coverage
+.nyc_output
+
+# TypeScript
 next-env.d.ts
+
+# Misc
+*.pem
+*.key
+
+# Uploads locais (scripts usam; assets vão pro Supabase)
+/uploads/*
+!/uploads/**/README.md
+
+# SQL com senhas ou dados sensíveis (opcional; manter .example)
+# supabase-*-FIXED.sql
+# SOLUCAO-DEFINITIVA.sql
