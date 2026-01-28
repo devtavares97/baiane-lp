@@ -63,7 +63,12 @@ next-env.d.ts
 
 # Uploads locais (scripts usam; assets vão pro Supabase)
 /uploads/*
-!/uploads/**/README.md
+!/uploads/logos/
+/uploads/logos/*
+!/uploads/logos/README.md
+!/uploads/portfolio/
+/uploads/portfolio/*
+!/uploads/portfolio/README.md
 
 # SQL com senhas ou dados sensíveis (opcional; manter .example)
 # supabase-*-FIXED.sql
