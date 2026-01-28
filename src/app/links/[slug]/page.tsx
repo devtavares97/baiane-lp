@@ -20,13 +20,15 @@ async function getProfileData(slug: string) {
     return null;
   }
 
+  const profileTyped = profile as LinkProfile;
+
   const { data: links } = await supabase
     .from("link_items")
     .select("*")
-    .eq("profile_id", profile.id)
+    .eq("profile_id", profileTyped.id)
     .order("order_num", { ascending: true });
 
-  return { profile: profile as LinkProfile, links: (links || []) as LinkItem[] };
+  return { profile: profileTyped, links: (links || []) as LinkItem[] };
 }
 
 export default async function LinkProfilePage({ params }: PageProps) {

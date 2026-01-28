@@ -166,8 +166,7 @@ export default function LinksPage() {
     if (!supabase || !profile) return;
 
     try {
-      const { error } = await supabase
-        .from("link_profiles")
+      const { error } = await (supabase.from("link_profiles") as any)
         .update({
           name: profileData.name,
           bio: profileData.bio || null,
@@ -249,8 +248,7 @@ export default function LinksPage() {
       
       // Salvar automaticamente após upload
       if (profile) {
-        const { error: updateError } = await supabase
-          .from("link_profiles")
+        const { error: updateError } = await (supabase.from("link_profiles") as any)
           .update({ avatar_url: data.publicUrl })
           .eq("id", profile.id);
         
@@ -276,8 +274,7 @@ export default function LinksPage() {
     try {
       if (editingLink.id) {
         // Atualizar
-        const { error } = await supabase
-          .from("link_items")
+        const { error } = await (supabase.from("link_items") as any)
           .update({
             title: editingLink.title,
             url: editingLink.url,
@@ -288,7 +285,7 @@ export default function LinksPage() {
         if (error) throw error;
       } else {
         // Criar novo
-        const { error } = await supabase.from("link_items").insert({
+        const { error } = await (supabase.from("link_items") as any).insert({
           profile_id: profile.id,
           title: editingLink.title,
           url: editingLink.url,

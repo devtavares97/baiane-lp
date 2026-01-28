@@ -21,9 +21,7 @@ export async function saveGrowthScanLead(lead: GrowthScanLead): Promise<boolean>
       referrer: typeof window !== 'undefined' ? document.referrer : null,
     };
 
-    // @ts-ignore - Leads types
-    const { error } = await supabase
-      .from('leads_diagnostic')
+    const { error } = await (supabase.from('leads_diagnostic') as any)
       .insert(leadWithMetadata);
 
     if (error) {
