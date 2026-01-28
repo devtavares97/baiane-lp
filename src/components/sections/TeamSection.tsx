@@ -14,9 +14,10 @@ import { cn } from "@/lib/utils";
  * Seção de apresentação do time.
  * 
  * Features:
- * - Card centralizado com foto do fundador
+ * - Grid de cards com fotos dos membros do time
  * - Design elegante e minimalista
  * - Hover effects sutis
+ * - Layout responsivo (1 coluna mobile, 2 colunas desktop)
  */
 
 interface TeamMember {
@@ -30,8 +31,14 @@ const teamMembers: TeamMember[] = [
   {
     name: "Marcos Antonio",
     role: "FUNDADOR & CREATIVE DIRECTOR",
-    description: "Criativo, filmmaker e pai. Apaixonado por criar desde os 12 anos de idade.",
+    description: "Nascido em Salvador, Bahia. Profissional de Design Gráfico e Audiovisual com mais de 5 anos de experiência. Apaixonado por criar desde os 12 anos, aprendeu Design Gráfico de forma 100% autodidata. Filmmaker, criativo e pai.",
     image: "/images/team/marcos-antonio.jpg",
+  },
+  {
+    name: "Ricardo Henrique",
+    role: "CEO & FUNDADOR",
+    description: "Especialista em gestão de negócios e eventos esportivos. Apaixonado por usar o esporte como ferramenta de integração social e marketing estratégico. Graduado em Administração e especialista em Marketing Digital.",
+    image: "/images/team/ricardo-henrique.jpg",
   },
 ];
 
@@ -83,16 +90,16 @@ export function TeamSection() {
           </DisplayH2>
         </motion.div>
 
-        {/* Team Member Card (Centralizado) */}
+        {/* Team Member Cards (Grid) */}
         <div className="flex justify-center">
-          <div className="max-w-md w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-5xl w-full">
             {teamMembers.map((member, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.8, delay: index * 0.2 }}
                 whileHover={{ y: -8 }}
                 className={cn(
                   "group relative",
@@ -108,7 +115,7 @@ export function TeamSection() {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 448px"
-                    priority
+                    priority={index === 0}
                   />
                   
                   {/* Gradient overlay */}
