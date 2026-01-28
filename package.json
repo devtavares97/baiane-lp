@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "setup:supabase": "tsx scripts/final-setup.ts"
+    "setup:supabase": "tsx scripts/final-setup.ts",
+    "setup:github": "tsx scripts/setup-github.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.93.1",
