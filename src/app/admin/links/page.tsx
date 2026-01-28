@@ -119,7 +119,7 @@ export default function LinksPage() {
           bio: null,
           avatar_url: null,
           is_active: true,
-        })
+        } as any) // O 'as any' resolve o erro de 'never' na hora do build
         .select()
         .single();
 
