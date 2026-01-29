@@ -21,11 +21,12 @@ export default function LinkProfilePage() {
       return;
     }
 
+    const slugStr: string = slug;
     let cancelled = false;
 
     async function load() {
       try {
-        const res = await fetch(`/api/links/${encodeURIComponent(slug)}`);
+        const res = await fetch(`/api/links/${encodeURIComponent(slugStr)}`);
         if (!res.ok) {
           if (res.status === 404) setNotFoundState(true);
           setLoading(false);
