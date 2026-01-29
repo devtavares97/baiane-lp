@@ -1,42 +1,63 @@
-import { notFound } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import type { LinkProfile, LinkItem } from "@/types/supabase";
 
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
+type Data = { profile: LinkProfile; links: LinkItem[] } | null;
 
-async function getProfileData(slug: string) {
-  if (!supabase) return null;
+export default function LinkProfilePage() {
+  const params = useParams();
+  const slug = params?.slug as string | undefined;
+  const [data, setData] = useState<Data>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFoundState, setNotFoundState] = useState(false);
 
-  const { data: profile, error: profileError } = await supabase
-    .from("link_profiles")
-    .select("*")
-    .eq("slug", slug)
-    .maybeSingle();
+  useEffect(() => {
+    if (!slug) {
+      setNotFoundState(true);
+      setLoading(false);
+      return;
+    }
 
-  if (profileError || !profile) {
-    return null;
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const res = await fetch(`/api/links/${encodeURIComponent(slug)}`);
+        if (!res.ok) {
+          if (res.status === 404) setNotFoundState(true);
+          setLoading(false);
+          return;
+        }
+        const json = await res.json();
+        if (!cancelled) {
+          setData({ profile: json.profile, links: json.links ?? [] });
+        }
+      } catch {
+        if (!cancelled) setNotFoundState(true);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  if (notFoundState) {
+    notFound();
   }
 
-  const profileTyped = profile as LinkProfile;
-
-  const { data: links } = await supabase
-    .from("link_items")
-    .select("*")
-    .eq("profile_id", profileTyped.id)
-    .order("order_num", { ascending: true });
-
-  return { profile: profileTyped, links: (links || []) as LinkItem[] };
-}
-
-export default async function LinkProfilePage({ params }: PageProps) {
-  const { slug } = await params;
-  const data = await getProfileData(slug);
-
-  if (!data) {
-    notFound();
+  if (loading || !data) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <div className="animate-pulse rounded-full h-12 w-12 border-2 border-white/20 border-t-white" />
+      </div>
+    );
   }
 
   const { profile, links } = data;
@@ -52,7 +73,6 @@ export default async function LinkProfilePage({ params }: PageProps) {
       <div className="w-full max-w-md relative z-10">
         {/* Profile Header */}
         <div className="text-center mb-8">
-          {/* Avatar - maior e mais destacado */}
           <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary to-primary/60 mx-auto mb-6 flex items-center justify-center overflow-hidden border-4 border-white/10 shadow-2xl">
             {profile.avatar_url ? (
               <img
@@ -66,13 +86,11 @@ export default async function LinkProfilePage({ params }: PageProps) {
               </span>
             )}
           </div>
-          
-          {/* Nome */}
+
           <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-3">
             {profile.name}
           </h1>
-          
-          {/* Bio */}
+
           {profile.bio && (
             <p className="font-body text-base text-text-muted max-w-sm mx-auto leading-relaxed">
               {profile.bio}
@@ -80,7 +98,7 @@ export default async function LinkProfilePage({ params }: PageProps) {
           )}
         </div>
 
-        {/* Links - estilo botões grandes */}
+        {/* Links */}
         <div className="space-y-3 mb-8">
           {links.map((link: LinkItem) => (
             <a
@@ -113,7 +131,6 @@ export default async function LinkProfilePage({ params }: PageProps) {
           </div>
         )}
 
-        {/* Footer */}
         <div className="text-center mt-8">
           <a
             href="/"

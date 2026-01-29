@@ -25,13 +25,14 @@ export async function saveGrowthScanLead(lead: GrowthScanLead): Promise<boolean>
       .insert(leadWithMetadata);
 
     if (error) {
-      console.error('Error saving lead:', error);
+      console.error('[Growth Scan] Erro ao salvar lead:', error.message, error.code, error.details);
       return false;
     }
 
     return true;
   } catch (error) {
-    console.error('Failed to save lead:', error);
+    const err = error as Error;
+    console.error('[Growth Scan] Falha ao salvar lead:', err?.message ?? error);
     return false;
   }
 }

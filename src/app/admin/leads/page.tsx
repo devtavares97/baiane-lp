@@ -8,7 +8,6 @@ import {
   Phone,
   Calendar,
   TrendingUp,
-  Download,
   Search,
   Filter,
 } from "lucide-react";
@@ -86,38 +85,6 @@ export default function LeadsPage() {
     setFilteredLeads(filtered);
   }
 
-  function exportToCSV() {
-    const headers = [
-      "Nome",
-      "Email",
-      "WhatsApp",
-      "Faturamento",
-      "Dor Principal",
-      "Arquétipo",
-      "Score",
-      "Data",
-    ];
-
-    const rows = filteredLeads.map((lead) => [
-      lead.contact_name,
-      lead.contact_email,
-      lead.contact_whatsapp || "",
-      revenueTierLabels[lead.revenue_tier],
-      painLabels[lead.main_pain],
-      lead.result_archetype,
-      lead.maturity_score,
-      new Date(lead.created_at).toLocaleDateString("pt-BR"),
-    ]);
-
-    const csv = [headers, ...rows].map((row) => row.join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `leads-${new Date().toISOString().split("T")[0]}.csv`;
-    a.click();
-  }
-
   const uniqueArchetypes = Array.from(
     new Set(leads.map((lead) => lead.result_archetype))
   );
@@ -138,28 +105,13 @@ export default function LeadsPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-display text-4xl font-bold text-white mb-2">
-              Leads
-            </h1>
-            <p className="font-body text-text-muted">
-              {filteredLeads.length} lead(s) encontrado(s)
-            </p>
-          </div>
-          <button
-            onClick={exportToCSV}
-            disabled={filteredLeads.length === 0}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg",
-              "bg-primary text-white font-body font-medium",
-              "hover:bg-primary/90 transition-all duration-300",
-              "disabled:opacity-50 disabled:cursor-not-allowed"
-            )}
-          >
-            <Download className="w-4 h-4" />
-            Exportar CSV
-          </button>
+        <div>
+          <h1 className="font-display text-4xl font-bold text-white mb-2">
+            Leads
+          </h1>
+          <p className="font-body text-text-muted">
+            {filteredLeads.length} lead(s) encontrado(s)
+          </p>
         </div>
       </motion.div>
 
